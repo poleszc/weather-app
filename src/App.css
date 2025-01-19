@@ -41,9 +41,9 @@
   color: #888;
 }
 
-.map-container {
-  height: 500px;  /* Pełna wysokość okna */
-  width: 100%;    /* Pełna szerokość */
-  position: relative;
-  z-index: 1;
+/* Map size */
+.leaflet-container {
+  height: 50vh; 
+  width: 100vw;
+
 }
