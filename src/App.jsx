@@ -1,33 +1,16 @@
-import { ThemeProvider } from 'styled-components'
-import { useState } from 'react'
+import { ThemeProvider } from 'styled-components';
+import { lightTheme, darkTheme } from './theme';
+import { GlobalStyle } from './global-styles.jsx';
+import { WeatherApp } from './weather-app';
 
-import Map from './components/Map.jsx'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <h1>Weather App</h1>
-
-      <Map />
-      {/* <FilterBox /> */}
+export const App = () => {
+    const dark = false;
 
 
-      {/* <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
-    </>
-  )
+    return (
+        <ThemeProvider theme={dark === true ? darkTheme : lightTheme}>
+            <GlobalStyle />
+            <WeatherApp />
+        </ThemeProvider>
+    );
 }
-
-export default App
