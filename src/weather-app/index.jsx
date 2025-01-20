@@ -3,7 +3,6 @@ import {
     MapFilterWrapper,
     Map,
     Filter,
-    TestComponent,
     Footer
  } from './components';
 

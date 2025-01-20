@@ -9,7 +9,8 @@ export const GlobalStyle = createGlobalStyle`
 
     html {
         height:87.5%;
-        overflow: hidden;
+        min-width: 420px;
+        // overflow: hidden;
     }
     body,
     #root {
@@ -28,7 +29,7 @@ export const GlobalStyle = createGlobalStyle`
 
     body {
      //     margin: ${({ theme }) => theme.dims.bigSpacing};
-        margin: 8px;
+        // margin: 8px;
         padding: 0 16px;
     }
 
