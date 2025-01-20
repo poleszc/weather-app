@@ -3,7 +3,14 @@ import { HeaderWrapper } from './HeaderWrapper.jsx';
 export const Header = () => {
     return (
         <HeaderWrapper>
-            <h1>Weather App</h1>
+            <div>
+                <h1>Weather App</h1>
+            </div>
+            <div>
+                <button>
+                    Dark Mode
+                </button>
+            </div>
         </HeaderWrapper>
     );
 }

@@ -4,7 +4,6 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import customMarkerIcon from '../../../assets/pin.png';
 import { MapWrapper } from "./MapWrapper";
 
-
 export const Map = () => {
     const defaultLocation = [0, 0];
     const markers = [
@@ -29,12 +28,16 @@ export const Map = () => {
 
 
 
+    // const map = useMap();
+
+
     return (
         <MapWrapper>
             <MapContainer 
                 center={defaultLocation} 
                 zoom={5} 
-                scrollWheelZoom={true} 
+                scrollWheelZoom={true}
+                style={{borderRadius: '10px'}}
                 >
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -49,6 +52,11 @@ export const Map = () => {
                     </Marker>
                 ))
             }
+
+            <button style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }}>
+                    Center Map
+            </button>
+
             </MapContainer>
         </MapWrapper>
     )

@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const FooterWrapper = styled.div`
     background-color: #C0C0C0;
+    border-radius: 10px;
     color: #fff;
     padding: 1rem;
     display: flex;
