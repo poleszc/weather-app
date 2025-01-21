@@ -1,22 +1,25 @@
 import { ofType } from 'redux-observable';
 import { from, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, map, mergeMap } from 'rxjs/operators';
-import { fetchCitiesStart, fetchCitiesSuccess, fetchCitiesFailure } from './mapSlice';
+import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
+import { getCitiesStart, getCitiesSuccess, getCitiesFailure } from './citiesReducers';
 
-export const fetchCitiesEpic = (action$, state$) => {
+export const getCitiesEpic = (action$, state$) => {
     return action$.pipe(
-        ofType(fetchCitiesStart.type),
+        ofType(getCitiesStart.type),
+        debounceTime(200),
         mergeMap(() => {
-            const mapBounds = state$.value.map.bounds; // Zakładamy, że bounds są w stanie
-            const [south, west, north, east] = mapBounds;
+            console.log("Overpass API");
+            const mapBounds = state$.value.cities.bounds; // Zakładamy, że bounds są w stanie
+            console.log(mapBounds);
+            const [N, E, S, W] = mapBounds;
 
             const overpassQuery = `
-                [out:json][timeout:25];
-                (
-                  node["place"="city"]((${south},${west},${north},${east}));
-                );
-                out body;
+                [out:json];
+                node
+                  [place="city"]
+                  (${S},${W},${N},${E});
+                out;
             `;
 
             const overpassUrl = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`;
@@ -28,14 +31,14 @@ export const fetchCitiesEpic = (action$, state$) => {
                         .sort((a, b) => b.tags.population - a.tags.population)
                         .slice(0, 20)
                         .map((city) => ({
-                            name: city.tags.name,
+                            name: city.tags['name:en'] ?? city.tags.name,
                             population: city.tags.population,
                             lat: city.lat,
                             lng: city.lon,
                         }));
-                    return fetchCitiesSuccess(cities);
+                    return getCitiesSuccess(cities);
                 }),
-                catchError((error) => of(fetchCitiesFailure(error.message)))
+                catchError((error) => of(getCitiesFailure(error.message)))
             );
         })
     );

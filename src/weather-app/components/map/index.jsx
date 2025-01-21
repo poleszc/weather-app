@@ -5,15 +5,18 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
 import customMarkerIcon from '../../../assets/pin.png';
 import { MapWrapper } from "./MapWrapper";
+import { LoadingSpinner } from "./LoadingSpinner";
 import { useDispatch, useSelector } from "react-redux";
-import { userLocationSelector } from "../../state/selectors";
+import { citiesAreLoadingSelector, citiesSelector, userLocationSelector } from "../../state/selectors";
 import { locateUserStart } from "../../state/locationReducers";
 import { DEFAULT_MAP_ZOOM, DEFAULT_MAP_LOCATION, DEFAULT_SCROLL_WHEEL_ZOOM } from "../../../const";
+import { getCitiesStart, updateBounds } from "../../state/citiesReducers";
 
 const MapMover = () => {
     // const userLocation = useSelector((state) => state.location.position);
     const userLocation = useSelector(userLocationSelector);
     const map = useMap();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (userLocation.lat !== 0 && userLocation.lng !== 0) {
@@ -24,9 +27,15 @@ const MapMover = () => {
     useMapEvent('moveend', () => {
         console.log("Map was moved");
         const bounds = map.getBounds();
-        
-        console.log(bounds);
-        // getMapBounds();
+        const mapBounds = [
+            bounds.getNorthEast().lat,
+            bounds.getNorthEast().lng,
+            bounds.getSouthWest().lat,
+            bounds.getSouthWest().lng
+        ];
+
+        dispatch(updateBounds(mapBounds));
+        dispatch(getCitiesStart());
     })
 
 
@@ -43,6 +52,10 @@ const MapMover = () => {
 
 
 export const Map = () => {
+    const cities = useSelector(citiesSelector);
+    const citiesAreLoading = useSelector(citiesAreLoadingSelector);
+    console.log(cities);
+
     const markers = [
         { coords: [48.86, 2.3522], text: "Popup1" },
         { coords: [48.85, 2.3522], text: "Popup2" },
@@ -75,16 +88,19 @@ export const Map = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
 
-                {markers.map((marker, index) => (
-                    <Marker key={index} position={marker.coords} icon={myIcon}>
+                {cities.map((city, index) => (
+                    <Marker key={index} position={[city.lat, city.lng]} icon={myIcon}>
                         <Popup>
-                            {marker.text}
+                            {city.name}
                         </Popup>
                     </Marker>
                 ))
             }
 
             <MapMover />
+
+            
+            {citiesAreLoading && <LoadingSpinner/>}
 
             <button 
                 style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }} 
