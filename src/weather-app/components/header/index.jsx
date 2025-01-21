@@ -1,4 +1,5 @@
 import { HeaderWrapper } from './HeaderWrapper.jsx';
+// import { changeTheme } from ''
 
 export const Header = () => {
     return (
@@ -8,6 +9,7 @@ export const Header = () => {
             </div>
             <div>
                 <button>
+                {/* <button onClick={changeTheme}> */}
                     Dark Mode
                 </button>
             </div>

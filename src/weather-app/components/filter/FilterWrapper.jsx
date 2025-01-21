@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const FilterWrapper = styled.div`
     flex-basis: 25%;
     border-radius: 10px;
-    background-color: #ff0000;
-    color: #fff;
+    background-color: ${({theme}) => theme.colors.idk};
+    color: ${({theme}) => theme.colors.text};
     padding: 1rem;
     display: flex;
     flex-direction: column;

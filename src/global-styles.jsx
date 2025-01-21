@@ -16,6 +16,8 @@ export const GlobalStyle = createGlobalStyle`
     #root {
         height: 100%;
         width: 100%;
+        margin: 0;
+        padding: 0;
 
         color: ${({ theme }) => theme.colors.text};
         background-color: ${({ theme }) => theme.colors.background};
@@ -23,8 +25,6 @@ export const GlobalStyle = createGlobalStyle`
         font-size: ${({ theme }) => theme.fonts.basic.fontSize};
         font-family: ${({ theme }) => theme.fonts.basic.fontFamily};
 
-        margin: 0;
-        padding: 0;
     }
 
     body {
@@ -34,8 +34,8 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     button {
-        background-color: #444;
-        color: #fff;
+        background-color: ${({theme}) => theme.colors.button};
+        color: ${({theme}) => theme.colors.text};
         border: none;
         padding: 0.5rem 1rem;
         border-radius: 4px;
@@ -48,7 +48,7 @@ export const GlobalStyle = createGlobalStyle`
 
         &:focus {
             outline: none;
-            border: 2px solid #fff;
+            // border: 2px solid #fff;
         }
     }
     

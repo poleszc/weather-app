@@ -1,7 +1,7 @@
 import { ofType } from 'redux-observable';
 import { from, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { locateUserStart, locateUserSuccess, locateUserFailure } from './locationSlice';
+import { locateUserStart, locateUserSuccess, locateUserFailure } from './locationReducers';
 
 const getCurrentPosition = () =>
     new Promise((resolve, reject) =>
