@@ -1,29 +1,23 @@
-import { Icon } from "leaflet";
+import 'leaflet/dist/leaflet.css';
 import React from "react";
 import { useEffect } from "react";
-import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer, Tooltip, useMap, useMapEvent } from "react-leaflet";
-import customMarkerIcon from '../../../assets/pin.png';
 import { MapWrapper } from "./MapWrapper";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { useDispatch, useSelector } from "react-redux";
 
 import { 
     citiesAreLoadingSelector, 
-    citiesSelector, 
     userLocationSelector, 
     filteredCitiesSelector, 
     weatherByCitySelector,
-    maxPopulationInVisibleCitiesSelector
 } from "../../state/selectors";
 
 import { locateUserStart } from "../../state/locationReducers";
 import { DEFAULT_MAP_ZOOM, DEFAULT_MAP_LOCATION, DEFAULT_SCROLL_WHEEL_ZOOM, IDEAL_TEMP, WEATHER_ICONS } from "../../../const";
 import { 
-    applyFilters, 
     getCitiesStart, 
     updateBounds, 
-    updateFilteredCities 
 } from "../../state/citiesReducers";
 
 const MapMover = () => {
@@ -62,25 +56,15 @@ const MapMover = () => {
 export const Map = () => {
     const cities = useSelector(filteredCitiesSelector);
     const citiesAreLoading = useSelector(citiesAreLoadingSelector);
-    const weatherByCity = useSelector(weatherByCitySelector);
-    
+    const weatherByCity = useSelector(weatherByCitySelector);    
     const dispatch = useDispatch();
 
-    // console.log("Weather by city: " + JSON.stringify(weatherByCity, null, 2));
-
-    const myIcon = new Icon({
-        iconUrl: customMarkerIcon,
-        iconSize: [38, 38]
-    });
-    
-    
     const moveToLocation = () => {
         dispatch(locateUserStart());
     };
       
 
     const assignWeatherClass = (weather) => {
-        // console.log(JSON.stringify(weather));
         const isNoRain = weather.precip_mm === 0;
         const isIdealTemp = weather.temperature >= IDEAL_TEMP.min &&
                             weather.temperature <= IDEAL_TEMP.max;
@@ -111,7 +95,7 @@ export const Map = () => {
                 {cities.map((city, index) => {
                     const weather = weatherByCity[city.name];
                     const isWeatherLoading = !weather;
-                    const weatherClass = isWeatherLoading ? assignWeatherClass(weather) : 'Loading';
+                    const weatherClass = isWeatherLoading ? 'Loading': assignWeatherClass(weather);
 
                     const myIcon = L.divIcon({
                         className: 'custom-icon',

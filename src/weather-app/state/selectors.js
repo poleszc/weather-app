@@ -1,14 +1,21 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { LOCATION_REDUCER_NAME } from "./locationReducers";
 import { CITIES_REDUCER_NAME } from "./citiesReducers";
+import { THEME_REDUCER_NAME } from "./themeReducers";
 
 export const selectLocationState = (state) => state[LOCATION_REDUCER_NAME];
 export const citiesState = (state) => state[CITIES_REDUCER_NAME];
+export const themeState = (state) => state[THEME_REDUCER_NAME];
 
 
 export const userLocationSelector = createSelector(
     selectLocationState,
     ({ position }) => position
+);
+
+export const themeSelector = createSelector(
+    themeState,
+    ({ isDarkMode }) => isDarkMode
 );
 
 export const citiesSelector = createSelector(

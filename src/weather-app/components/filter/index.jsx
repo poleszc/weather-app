@@ -18,7 +18,7 @@ export const Filter = () => {
             
             <CityFilterWrapper>
                 <label htmlFor="city"> 
-                    City: <br />
+                    City Name: <br />
                     <input 
                         type="text" 
                         name="city" 
@@ -31,8 +31,8 @@ export const Filter = () => {
             </CityFilterWrapper>
             
             <PopulationFilterWrapper>
-                <label htmlFor="population"> 
-                    Population: <br /> 
+                <label htmlFor="population" style={{ display: 'block', width: '100%' }}> 
+                    Minimum Population: <br /> 
                     <input 
                         name="population" 
                         type="range" 

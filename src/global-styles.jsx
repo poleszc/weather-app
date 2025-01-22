@@ -51,5 +51,28 @@ export const GlobalStyle = createGlobalStyle`
             // border: 2px solid #fff;
         }
     }
+
+    input[type="text"], textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+        border: 1px solid ${({ theme }) => theme.colors.inputBorder || '#ccc'};
+        border-radius: 4px;
+        font-size: 1rem;
+        font-family: ${({ theme }) => theme.fonts.basic.fontFamily};
+        color: ${({ theme }) => theme.colors.text};
+        background-color: ${({ theme }) => theme.colors.inputBackground || '#fff'};
+
+        &:focus {
+            outline: none;
+            border-color: ${({ theme }) => theme.colors.inputFocusBorder || '#007BFF'};
+            box-shadow: 0 0 5px ${({ theme }) => theme.colors.inputFocusShadow || 'rgba(0, 123, 255, 0.5)'};
+        }
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
     
 `;
