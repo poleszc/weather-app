@@ -18,7 +18,7 @@ import {
 } from "../../state/selectors";
 
 import { locateUserStart } from "../../state/locationReducers";
-import { DEFAULT_MAP_ZOOM, DEFAULT_MAP_LOCATION, DEFAULT_SCROLL_WHEEL_ZOOM } from "../../../const";
+import { DEFAULT_MAP_ZOOM, DEFAULT_MAP_LOCATION, DEFAULT_SCROLL_WHEEL_ZOOM, IDEAL_TEMP, WEATHER_ICONS } from "../../../const";
 import { 
     applyFilters, 
     getCitiesStart, 
@@ -78,6 +78,22 @@ export const Map = () => {
         dispatch(locateUserStart());
     };
       
+
+    const assignWeatherClass = (weather) => {
+        // console.log(JSON.stringify(weather));
+        const isNoRain = weather.precip_mm === 0;
+        const isIdealTemp = weather.temperature >= IDEAL_TEMP.min &&
+                            weather.temperature <= IDEAL_TEMP.max;
+
+        if (isIdealTemp && isNoRain) {
+            return 'Nice';
+        }
+        if (!isIdealTemp && !isNoRain) {
+            return 'Not Nice';
+        }
+        return 'Passable';
+    };
+
     return (
         <MapWrapper>
             <MapContainer 
@@ -94,12 +110,50 @@ export const Map = () => {
 
                 {cities.map((city, index) => {
                     const weather = weatherByCity[city.name];
+                    const isWeatherLoading = !weather;
+                    const weatherClass = isWeatherLoading ? assignWeatherClass(weather) : 'Loading';
+
+                    const myIcon = L.divIcon({
+                        className: 'custom-icon',
+                        html: `
+                            <style>
+                                @keyframes spin {
+                                    0% {
+                                        transform: rotate(0deg);
+                                    }
+                                    100% {
+                                        transform: rotate(360deg);
+                                    }
+                                }
+                            </style>
+                            <div style="display: flex; flex-direction: row; align-items: center; 
+                                        background-color: rgba(255, 255, 255, 0.7); 
+                                        border-radius: 10px; 
+                                        padding: 5px; 
+                                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+                                        width: 60px; height: 40px; justify-content: center;
+                            ">
+                                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                                    ${isWeatherLoading ? `
+                                        <div style="border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%;
+                                                    width: 24px; height: 24px; animation: spin 2s linear infinite;">
+                                        </div>`  
+                                    : `
+                                        <span style="font-size: 16px; margin-right: 5px;">${WEATHER_ICONS[weatherClass]}</span>
+                                        <img src="https:${weather.icon}" alt="${weather.condition}" style="width: 30px; height: 30px; border-radius: 5px;" />
+                                    `}
+                                </div>
+                            </div>`,
+                        iconSize: [60, 60],
+                        iconAnchor: [30, 45],
+                    });
+
 
                     return (
                         <Marker key={index} position={[city.lat, city.lng]} icon={myIcon}>
                             <Tooltip>
                                 <div>
-                                    <h3>{city.name}</h3>
+                                    <h3>{city.name} {WEATHER_ICONS[weatherClass]}</h3>
                                     {weather ? (
                                         <>
                                             <p><strong>Temperature:</strong> {weather.temperature}°C</p>

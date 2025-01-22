@@ -1,7 +1,7 @@
 import { ofType } from 'redux-observable';
 import { from, interval, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
+import { catchError, debounceTime, map, mergeMap, debounce } from 'rxjs/operators';
 import { 
     getCitiesStart, 
     getCitiesSuccess, 
@@ -20,13 +20,14 @@ import {
     WEATHER_API_URL, 
     API_KEY, 
     OVERPASS_API_URL,
-    DEFAULT_WEATHER_REFRESH_INTERVAL
+    DEFAULT_WEATHER_REFRESH_INTERVAL,
+    DEFAULT_DOWNLOAD_DEBOUNCE_TIME
 } from '../../const';
 
 export const getCitiesEpic = (action$, state$) => {
     return action$.pipe(
         ofType(getCitiesStart.type),
-        debounceTime(DEFAULT_FILTER_DEBOUNCE_TIME),
+        debounceTime(DEFAULT_DOWNLOAD_DEBOUNCE_TIME),
         mergeMap(() => {
             const mapBounds = state$.value.cities.bounds;
             const [N, E, S, W] = mapBounds;
@@ -66,7 +67,7 @@ export const getCitiesEpic = (action$, state$) => {
 export const filterCitiesEpic = (action$, state$) => {
     return action$.pipe(
         ofType(applyFilters.type),
-        debounceTime(200),
+        debounceTime(DEFAULT_FILTER_DEBOUNCE_TIME),
         map(() => {
             const { cities, filter } = state$.value.cities;
 
@@ -87,7 +88,7 @@ export const filterCitiesEpic = (action$, state$) => {
 export const getWeatherEpic = (action$, state$) => {
     return action$.pipe(
         ofType(getCitiesSuccess.type),
-        debounceTime(1000), // TODO: Is that needed?
+        debounceTime(DEFAULT_DOWNLOAD_DEBOUNCE_TIME), // TODO: Is that needed?
         mergeMap((action) => {
 
             const cities = action.payload;
@@ -139,7 +140,7 @@ export const refreshWeatherEpic = (action$, state$) => {
             console.log("Refresh data")
             const { cities } = state$.value.cities;
 
-            if (!Array.isArray(cities) || cities.length === 0) {
+            if (cities.length === 0) {
                 return of();
             }
 
