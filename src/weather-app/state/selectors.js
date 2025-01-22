@@ -30,3 +30,8 @@ export const filterSelector = createSelector(
     citiesState,
     ({ filter }) => filter
 );
+
+export const weatherByCitySelector = createSelector(
+    citiesState,
+    ({ weatherByCity }) => weatherByCity  
+);

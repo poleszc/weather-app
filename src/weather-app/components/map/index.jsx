@@ -7,10 +7,23 @@ import customMarkerIcon from '../../../assets/pin.png';
 import { MapWrapper } from "./MapWrapper";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { useDispatch, useSelector } from "react-redux";
-import { citiesAreLoadingSelector, citiesSelector, userLocationSelector, filteredCitiesSelector } from "../../state/selectors";
+
+import { 
+    citiesAreLoadingSelector, 
+    citiesSelector, 
+    userLocationSelector, 
+    filteredCitiesSelector, 
+    weatherByCitySelector 
+} from "../../state/selectors";
+
 import { locateUserStart } from "../../state/locationReducers";
 import { DEFAULT_MAP_ZOOM, DEFAULT_MAP_LOCATION, DEFAULT_SCROLL_WHEEL_ZOOM } from "../../../const";
-import { applyFilters, getCitiesStart, updateBounds, updateFilteredCities } from "../../state/citiesReducers";
+import { 
+    applyFilters, 
+    getCitiesStart, 
+    updateBounds, 
+    updateFilteredCities 
+} from "../../state/citiesReducers";
 
 const MapMover = () => {
     const userLocation = useSelector(userLocationSelector);
@@ -48,13 +61,17 @@ const MapMover = () => {
 export const Map = () => {
     const cities = useSelector(filteredCitiesSelector);
     const citiesAreLoading = useSelector(citiesAreLoadingSelector);
+    const weatherByCity = useSelector(weatherByCitySelector);
+    
+    const dispatch = useDispatch();
+
+    console.log("Weather by city: " + JSON.stringify(weatherByCity, null, 2));
 
     const myIcon = new Icon({
         iconUrl: customMarkerIcon,
         iconSize: [38, 38]
     });
-
-    const dispatch = useDispatch();
+    
     
     const moveToLocation = () => {
         dispatch(locateUserStart());
@@ -74,14 +91,33 @@ export const Map = () => {
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 />
 
-                {cities.map((city, index) => (
-                    <Marker key={index} position={[city.lat, city.lng]} icon={myIcon}>
-                        <Popup>
-                            {city.name}
-                        </Popup>
-                    </Marker>
-                ))
-            }
+                {cities.map((city, index) => {
+                    const weather = weatherByCity[city.name];
+
+                    return (
+                        <Marker key={index} position={[city.lat, city.lng]} icon={myIcon}>
+                            <Popup>
+                                <div>
+                                    <h3>{city.name}</h3>
+                                    {weather ? (
+                                        <>
+                                            <p><strong>Temperature:</strong> {weather.temperature}°C</p>
+                                            <p><strong>Condition:</strong> {weather.condition}</p>
+                                            <p><strong>Humidity:</strong> {weather.humidity}%</p>
+                                            <img 
+                                                src={`https:${weather.icon}`} 
+                                                alt={weather.condition} 
+                                                style={{ width: '50px', height: '50px' }}
+                                            />
+                                        </>
+                                    ) : (
+                                        <p>Loading weather data...</p>
+                                    )}
+                                </div>
+                            </Popup>
+                        </Marker>
+                    );
+                })}
 
             <MapMover />
             <LoadingSpinner isLoading={citiesAreLoading}/>

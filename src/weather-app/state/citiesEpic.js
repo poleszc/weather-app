@@ -6,11 +6,20 @@ import {
     getCitiesStart, 
     getCitiesSuccess, 
     getCitiesFailure, 
+    getWeatherStart,
+    getWeatherSuccess,
+    getWeatherFailure,
     applyFilters,
     updateFilteredCities
 } from './citiesReducers';
 
-import { DEFAULT_MAX_CITIES_NUMBER, DEFAULT_FILTER_DEBOUNCE_TIME } from '../../const';
+import { 
+    DEFAULT_MAX_CITIES_NUMBER, 
+    DEFAULT_FILTER_DEBOUNCE_TIME, 
+    WEATHER_API_URL, 
+    API_KEY, 
+    OVERPASS_API_URL 
+} from '../../const';
 
 export const getCitiesEpic = (action$, state$) => {
     return action$.pipe(
@@ -28,7 +37,7 @@ export const getCitiesEpic = (action$, state$) => {
                 out;
             `;
 
-            const overpassUrl = `https://overpass-api.de/api/interpreter?data=${encodeURIComponent(overpassQuery)}`;
+            const overpassUrl = `${OVERPASS_API_URL}?data=${encodeURIComponent(overpassQuery)}`;
 
             return from(ajax.getJSON(overpassUrl)).pipe(
                 map((response) => {
@@ -71,4 +80,47 @@ export const filterCitiesEpic = (action$, state$) => {
             return updateFilteredCities(filteredCities);
         })
     );
+};
+
+export const getWeatherEpic = (action$, state$) => {
+    return action$.pipe(
+        // ofType(getWeatherStart.type),
+        ofType(getCitiesSuccess.type),
+        // debounceTime(500), // TODO: Is that needed?
+        mergeMap((action) => {
+
+            const cities = action.payload;
+            
+            return from(cities).pipe(
+                mergeMap((city) => {
+                    const weatherUrl = `${WEATHER_API_URL}?key=${API_KEY}&q=${city.lat},${city.lng}&units=metric`;
+                    // console.log(weatherUrl);
+
+                    return ajax.getJSON(weatherUrl).pipe(
+                        map((weatherResponse) => {
+                            // console.log("Response " + weatherResponse.location.name);
+                            
+                            const weatherData = {
+                                name: weatherResponse.location.name,
+                                country: weatherResponse.location.country,
+                                temperature: weatherResponse.current.temp_c,
+                                humidity: weatherResponse.current.humidity,
+                                precip_mm: weatherResponse.current.precip_mm,
+                                condition: weatherResponse.current.condition.text,
+                                icon: weatherResponse.current.condition.icon,
+                            };
+
+                            // console.log(`Weather data for ${city.name}: ${weatherData}`);
+
+                            return getWeatherSuccess({
+                                cityName: city.name,
+                                weatherData,
+                            });
+                        }),
+                        catchError((error) => of(getWeatherFailure(error.message)))
+                    );
+                })
+            );
+        })
+    )
 };
