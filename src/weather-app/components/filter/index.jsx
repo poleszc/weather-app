@@ -1,37 +1,34 @@
-import { FilterWrapper } from "./FilterWrapper.jsx";
-import { CityFilterWrapper } from "./CityFilterWrapper.jsx";
-import { PopulationFilterWrapper } from "./PopulationFilterWrapper.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { applyFilters } from "../../state/citiesReducers.js";
+
 import { filterSelector, maxPopulationInVisibleCitiesSelector } from "../../state/selectors.js";
+import { FilterWrapper } from "./FilterWrapper.jsx";
+import { PopulationFilterWrapper } from "./PopulationFilterWrapper.jsx";
+import { applyFilters } from "../../state/cityDataReducers.js";
 
 export const Filter = () => {
     const filterData = useSelector(filterSelector);
     const maxPopulation = useSelector(maxPopulationInVisibleCitiesSelector);
     const dispatch = useDispatch();
 
-    // const maxPopulation = 1000000;
-    
     return (
         <FilterWrapper>
             <h1>Filter Cities</h1>
             
-            <CityFilterWrapper>
-                <label htmlFor="city"> 
-                    City Name: <br />
-                    <input 
-                        type="text" 
-                        name="city" 
-                        onChange={(e) => 
-                            dispatch(applyFilters(
-                                {...filterData, city: e.target.value}
-                        ))}
-                    />
-                </label>
-            </CityFilterWrapper>
+            <label> 
+                City Name: <br />
+                <input 
+                    type="text" 
+                    name="city"
+                    value={filterData.city || ''}
+                    onChange={(e) => 
+                        dispatch(applyFilters(
+                            {...filterData, city: e.target.value}
+                    ))}
+                />
+            </label>
             
             <PopulationFilterWrapper>
-                <label htmlFor="population" style={{ display: 'block', width: '100%' }}> 
+                <label style={{ display: 'block', width: '100%' }}> 
                     Minimum Population: <br /> 
                     <input 
                         name="population" 
@@ -54,7 +51,6 @@ export const Filter = () => {
             <button onClick={() => dispatch(applyFilters({city: '', population: 0}))}>
                 Reset filters
             </button>
-                    
         </FilterWrapper>
     );
 }

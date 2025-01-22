@@ -1,7 +1,7 @@
 import { combineEpics } from 'redux-observable';
 
-import { locateUserEpic } from './weather-app/state/locationEpic.js';
-import { getCitiesEpic, filterCitiesEpic, getWeatherEpic, refreshWeatherEpic } from './weather-app/state/citiesEpic.js';
+import { locateUserEpic } from './weather-app/state/locationEpics.js';
+import { getCitiesEpic, filterCitiesEpic, getWeatherEpic, refreshWeatherEpic } from './weather-app/state/cityDataEpics.js';
 
 export const rootEpic = combineEpics(
     locateUserEpic,

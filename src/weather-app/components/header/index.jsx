@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { HeaderWrapper } from './HeaderWrapper.jsx';
+
 import { themeSelector } from '../../state/selectors.js';
 import { changeTheme } from '../../state/themeReducers.js'
+import { HeaderWrapper } from './HeaderWrapper.jsx';
 
 export const Header = () => {
     const isDarkMode = useSelector(themeSelector);

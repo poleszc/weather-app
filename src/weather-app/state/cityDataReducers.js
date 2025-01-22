@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { bounds } from "leaflet";
-
 
 export const CITIES_REDUCER_NAME = 'cities'
 

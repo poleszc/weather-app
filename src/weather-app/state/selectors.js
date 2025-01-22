@@ -1,10 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { LOCATION_REDUCER_NAME } from "./locationReducers";
-import { CITIES_REDUCER_NAME } from "./citiesReducers";
+import { CITIES_REDUCER_NAME } from "./cityDataReducers";
 import { THEME_REDUCER_NAME } from "./themeReducers";
 
 export const selectLocationState = (state) => state[LOCATION_REDUCER_NAME];
-export const citiesState = (state) => state[CITIES_REDUCER_NAME];
+export const cityDataState = (state) => state[CITIES_REDUCER_NAME];
 export const themeState = (state) => state[THEME_REDUCER_NAME];
 
 
@@ -19,32 +19,32 @@ export const themeSelector = createSelector(
 );
 
 export const citiesSelector = createSelector(
-    citiesState,
+    cityDataState,
     ({ cities }) => cities
 );
 
 export const filteredCitiesSelector = createSelector(
-    citiesState,
+    cityDataState,
     ({ filteredCities }) => filteredCities  
 );
 
 export const citiesAreLoadingSelector = createSelector(
-    citiesState,
+    cityDataState,
     ({ loading }) => loading 
 );
 
 export const filterSelector = createSelector(
-    citiesState,
+    cityDataState,
     ({ filter }) => filter
 );
 
 export const weatherByCitySelector = createSelector(
-    citiesState,
+    cityDataState,
     ({ weatherByCity }) => weatherByCity  
 );
 
 export const maxPopulationInVisibleCitiesSelector = createSelector(
-    citiesState,
+    cityDataState,
     ( {cities} ) => {
         if (!cities || cities.length === 0) {
             return null;

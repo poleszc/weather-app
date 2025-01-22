@@ -3,7 +3,7 @@ import { useMap, useMapEvent } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
 import { userLocationSelector } from "../../../state/selectors";
 import { DEFAULT_MAP_ZOOM } from "../../../../constsAndUtils";
-import { getCitiesStart, updateBounds } from "../../../state/citiesReducers";
+import { getCitiesStart, updateBounds } from "../../../state/cityDataReducers";
 
 export const MapMover = () => {
     const userLocation = useSelector(userLocationSelector);

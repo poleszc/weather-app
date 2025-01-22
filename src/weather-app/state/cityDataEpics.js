@@ -1,7 +1,7 @@
 import { ofType } from 'redux-observable';
 import { from, interval, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, debounceTime, map, mergeMap, debounce } from 'rxjs/operators';
+import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 import { 
     getCitiesStart, 
     getCitiesSuccess, 
@@ -12,7 +12,7 @@ import {
     applyFilters,
     updateFilteredCities,
     clearWeatherData
-} from './citiesReducers';
+} from './cityDataReducers';
 
 import { 
     DEFAULT_MAX_CITIES_NUMBER, 
