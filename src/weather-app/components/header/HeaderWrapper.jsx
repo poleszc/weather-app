@@ -8,7 +8,7 @@ export const HeaderWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
 
-    background-color: ${({theme}) => theme.colors.header};
+    background-color: ${({theme}) => theme.colors.footer};
     color: ${({theme}) => theme.colors.text};
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;

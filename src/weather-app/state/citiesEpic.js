@@ -1,5 +1,5 @@
 import { ofType } from 'redux-observable';
-import { from, of } from 'rxjs';
+import { from, interval, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
 import { 
@@ -10,7 +10,8 @@ import {
     getWeatherSuccess,
     getWeatherFailure,
     applyFilters,
-    updateFilteredCities
+    updateFilteredCities,
+    clearWeatherData
 } from './citiesReducers';
 
 import { 
@@ -18,7 +19,8 @@ import {
     DEFAULT_FILTER_DEBOUNCE_TIME, 
     WEATHER_API_URL, 
     API_KEY, 
-    OVERPASS_API_URL 
+    OVERPASS_API_URL,
+    DEFAULT_WEATHER_REFRESH_INTERVAL
 } from '../../const';
 
 export const getCitiesEpic = (action$, state$) => {
@@ -84,22 +86,29 @@ export const filterCitiesEpic = (action$, state$) => {
 
 export const getWeatherEpic = (action$, state$) => {
     return action$.pipe(
-        // ofType(getWeatherStart.type),
         ofType(getCitiesSuccess.type),
-        // debounceTime(500), // TODO: Is that needed?
+        debounceTime(1000), // TODO: Is that needed?
         mergeMap((action) => {
 
             const cities = action.payload;
+            const weatherByCity = state$.value.cities.weatherByCity;
+
+            const citiesToFetch = cities.filter(city => !weatherByCity[city.name])
+
+            console.log(`All cities ${cities.length}, fetching: ${citiesToFetch.length}`);
+            console.log(`Dict size: ${Object.keys(weatherByCity).length}`);
+
+            if (citiesToFetch.length === 0) {
+                console.log("No reload");
+                return of();
+            }
             
-            return from(cities).pipe(
+            return from(citiesToFetch).pipe(
                 mergeMap((city) => {
-                    const weatherUrl = `${WEATHER_API_URL}?key=${API_KEY}&q=${city.lat},${city.lng}&units=metric`;
-                    // console.log(weatherUrl);
+                    const weatherUrl = `${WEATHER_API_URL}?key=${API_KEY}&q=${city.lat},${city.lng}`;
 
                     return ajax.getJSON(weatherUrl).pipe(
                         map((weatherResponse) => {
-                            // console.log("Response " + weatherResponse.location.name);
-                            
                             const weatherData = {
                                 name: weatherResponse.location.name,
                                 country: weatherResponse.location.country,
@@ -109,8 +118,6 @@ export const getWeatherEpic = (action$, state$) => {
                                 condition: weatherResponse.current.condition.text,
                                 icon: weatherResponse.current.condition.icon,
                             };
-
-                            // console.log(`Weather data for ${city.name}: ${weatherData}`);
 
                             return getWeatherSuccess({
                                 cityName: city.name,
@@ -123,4 +130,21 @@ export const getWeatherEpic = (action$, state$) => {
             );
         })
     )
+};
+
+
+export const refreshWeatherEpic = (action$, state$) => {
+    return interval(DEFAULT_WEATHER_REFRESH_INTERVAL).pipe(
+        map(() => {
+            console.log("Refresh data")
+            const { cities } = state$.value.cities;
+
+            if (!Array.isArray(cities) || cities.length === 0) {
+                return of();
+            }
+
+            return [clearWeatherData(), getCitiesSuccess(cities)];
+        }),
+        mergeMap((actions) => actions)
+    );
 };

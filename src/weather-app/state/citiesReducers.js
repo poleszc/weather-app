@@ -49,6 +49,9 @@ export const citiesSlice = createSlice({
         getWeatherFailure: (state, action) => {
             console.log("Get weather failure");
         },
+        clearWeatherData: (state) => {
+            state.weatherByCity = {};
+        },
         updateBounds: (state, action) => {
             console.log("New bounds: " + action.payload);
             state.bounds = action.payload;
@@ -73,7 +76,8 @@ export const {
     getWeatherFailure,
     updateBounds, 
     applyFilters,
-    updateFilteredCities
+    updateFilteredCities,
+    clearWeatherData
 } = citiesSlice.actions;
 
 export default citiesSlice.reducer;

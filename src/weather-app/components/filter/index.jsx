@@ -3,14 +3,14 @@ import { CityFilterWrapper } from "./CityFilterWrapper.jsx";
 import { PopulationFilterWrapper } from "./PopulationFilterWrapper.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { applyFilters } from "../../state/citiesReducers.js";
-import { filterSelector } from "../../state/selectors.js";
+import { filterSelector, maxPopulationInVisibleCitiesSelector } from "../../state/selectors.js";
 
 export const Filter = () => {
-
     const filterData = useSelector(filterSelector);
+    const maxPopulation = useSelector(maxPopulationInVisibleCitiesSelector);
     const dispatch = useDispatch();
 
-    const maxPopulation = 1000000;
+    // const maxPopulation = 1000000;
     
     return (
         <FilterWrapper>

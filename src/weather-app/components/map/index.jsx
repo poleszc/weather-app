@@ -2,7 +2,7 @@ import { Icon } from "leaflet";
 import React from "react";
 import { useEffect } from "react";
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, Tooltip, useMap, useMapEvent } from "react-leaflet";
 import customMarkerIcon from '../../../assets/pin.png';
 import { MapWrapper } from "./MapWrapper";
 import { LoadingSpinner } from "./LoadingSpinner";
@@ -13,7 +13,8 @@ import {
     citiesSelector, 
     userLocationSelector, 
     filteredCitiesSelector, 
-    weatherByCitySelector 
+    weatherByCitySelector,
+    maxPopulationInVisibleCitiesSelector
 } from "../../state/selectors";
 
 import { locateUserStart } from "../../state/locationReducers";
@@ -65,7 +66,7 @@ export const Map = () => {
     
     const dispatch = useDispatch();
 
-    console.log("Weather by city: " + JSON.stringify(weatherByCity, null, 2));
+    // console.log("Weather by city: " + JSON.stringify(weatherByCity, null, 2));
 
     const myIcon = new Icon({
         iconUrl: customMarkerIcon,
@@ -96,7 +97,7 @@ export const Map = () => {
 
                     return (
                         <Marker key={index} position={[city.lat, city.lng]} icon={myIcon}>
-                            <Popup>
+                            <Tooltip>
                                 <div>
                                     <h3>{city.name}</h3>
                                     {weather ? (
@@ -114,7 +115,7 @@ export const Map = () => {
                                         <p>Loading weather data...</p>
                                     )}
                                 </div>
-                            </Popup>
+                            </Tooltip>
                         </Marker>
                     );
                 })}

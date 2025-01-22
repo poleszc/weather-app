@@ -35,3 +35,16 @@ export const weatherByCitySelector = createSelector(
     citiesState,
     ({ weatherByCity }) => weatherByCity  
 );
+
+export const maxPopulationInVisibleCitiesSelector = createSelector(
+    citiesState,
+    ( {cities} ) => {
+        if (!cities || cities.length === 0) {
+            return null;
+        }
+        const cityWithMaxPopulation = cities.reduce((maxCity, currentCity) => {
+            return parseInt(currentCity.population, 10) > parseInt(maxCity.population, 10) ? currentCity : maxCity;
+        });
+        return cityWithMaxPopulation.population;
+    }
+);
