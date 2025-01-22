@@ -6,6 +6,7 @@ export const CITIES_REDUCER_NAME = 'cities'
 
 const initialState = {
     cities: [],
+    filteredCities: [],
     bounds: null,
     loading: false,
     error: null,
@@ -28,6 +29,8 @@ export const citiesSlice = createSlice({
             console.log("getCitiesSuccess");
             state.loading = false;
             state.cities = action.payload;
+            state.filteredCities = action.payload;
+            // TODO: Clear filters on map move?
         },
         getCitiesFailure: (state, action) => {
             console.log("getCitiesFail");
@@ -41,10 +44,21 @@ export const citiesSlice = createSlice({
         applyFilters: (state, action) => {
             console.log("Update filters");
             state.filter = action.payload;
+        },
+        updateFilteredCities: (state, action) => {
+            console.log("Update filtered cities");
+            state.filteredCities = action.payload;
         }
     }
 });
 
-export const { getCitiesStart, getCitiesSuccess, getCitiesFailure, updateBounds, applyFilters } = citiesSlice.actions;
+export const { 
+    getCitiesStart,
+    getCitiesSuccess, 
+    getCitiesFailure, 
+    updateBounds, 
+    applyFilters,
+    updateFilteredCities 
+} = citiesSlice.actions;
 
 export default citiesSlice.reducer;

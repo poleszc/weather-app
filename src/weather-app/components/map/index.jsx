@@ -7,13 +7,12 @@ import customMarkerIcon from '../../../assets/pin.png';
 import { MapWrapper } from "./MapWrapper";
 import { LoadingSpinner } from "./LoadingSpinner";
 import { useDispatch, useSelector } from "react-redux";
-import { citiesAreLoadingSelector, citiesSelector, userLocationSelector } from "../../state/selectors";
+import { citiesAreLoadingSelector, citiesSelector, userLocationSelector, filteredCitiesSelector } from "../../state/selectors";
 import { locateUserStart } from "../../state/locationReducers";
 import { DEFAULT_MAP_ZOOM, DEFAULT_MAP_LOCATION, DEFAULT_SCROLL_WHEEL_ZOOM } from "../../../const";
-import { getCitiesStart, updateBounds } from "../../state/citiesReducers";
+import { applyFilters, getCitiesStart, updateBounds, updateFilteredCities } from "../../state/citiesReducers";
 
 const MapMover = () => {
-    // const userLocation = useSelector((state) => state.location.position);
     const userLocation = useSelector(userLocationSelector);
     const map = useMap();
     const dispatch = useDispatch();
@@ -36,31 +35,19 @@ const MapMover = () => {
 
         dispatch(updateBounds(mapBounds));
         dispatch(getCitiesStart());
+        // dispatch(applyFilters()); // TODO: Apply filters afret map move?
     })
 
 
-    return userLocation.lat === 0 && userLocation.lng === 0 ? null : (
-        <Marker position={[userLocation.lat, userLocation.lng]}>
-            <Popup>
-                You are here. <br />
-            </Popup>
-        </Marker>
-    );
+    return null;
 }
 
 
 
 
 export const Map = () => {
-    const cities = useSelector(citiesSelector);
+    const cities = useSelector(filteredCitiesSelector);
     const citiesAreLoading = useSelector(citiesAreLoadingSelector);
-    console.log(cities);
-
-    const markers = [
-        { coords: [48.86, 2.3522], text: "Popup1" },
-        { coords: [48.85, 2.3522], text: "Popup2" },
-        { coords: [48.855, 2.34], text: "Popup3" }
-    ];
 
     const myIcon = new Icon({
         iconUrl: customMarkerIcon,

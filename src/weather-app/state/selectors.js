@@ -16,6 +16,11 @@ export const citiesSelector = createSelector(
     ({ cities }) => cities
 );
 
+export const filteredCitiesSelector = createSelector(
+    citiesState,
+    ({ filteredCities }) => filteredCities  
+);
+
 export const citiesAreLoadingSelector = createSelector(
     citiesState,
     ({ loading }) => loading 

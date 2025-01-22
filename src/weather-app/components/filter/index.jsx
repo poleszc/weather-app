@@ -8,9 +8,9 @@ import { filterSelector } from "../../state/selectors.js";
 export const Filter = () => {
 
     const filterData = useSelector(filterSelector);
-    const maxPopulation = 1000000;
-
     const dispatch = useDispatch();
+
+    const maxPopulation = 1000000;
     
     return (
         <FilterWrapper>
@@ -18,13 +18,21 @@ export const Filter = () => {
             
             <CityFilterWrapper>
                 <label htmlFor="city"> 
-                    City: 
-                    <input type="text" name="city" onChange={(e) => dispatch(applyFilters({...filterData, cityName: e.target.value}))} />
+                    City: <br />
+                    <input 
+                        type="text" 
+                        name="city" 
+                        onChange={(e) => 
+                            dispatch(applyFilters(
+                                {...filterData, city: e.target.value}
+                        ))}
+                    />
                 </label>
             </CityFilterWrapper>
             
             <PopulationFilterWrapper>
-                <label htmlFor="population"> Population: 
+                <label htmlFor="population"> 
+                    Population: <br /> 
                     <input 
                         name="population" 
                         type="range" 
@@ -32,13 +40,20 @@ export const Filter = () => {
                         max={maxPopulation} 
                         value={filterData.population || 0}
                         step={1000}
-                        onChange={(e) => dispatch(applyFilters({...filterData, population: parseInt(e.target.value, 10)}))}
+                        onChange={(e) => 
+                            dispatch(applyFilters(
+                                {...filterData, population: parseInt(e.target.value, 10)}
+                        ))}
                         className="slider" 
                         id="myRange"
-                        />
+                    />
                     {filterData.population || 0}
                 </label>
             </PopulationFilterWrapper>
+
+            <button onClick={() => dispatch(applyFilters({city: '', population: 0}))}>
+                Reset filters
+            </button>
                     
         </FilterWrapper>
     );

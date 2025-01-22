@@ -2,16 +2,22 @@ import { ofType } from 'redux-observable';
 import { from, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { catchError, debounceTime, map, mergeMap } from 'rxjs/operators';
-import { getCitiesStart, getCitiesSuccess, getCitiesFailure } from './citiesReducers';
+import { 
+    getCitiesStart, 
+    getCitiesSuccess, 
+    getCitiesFailure, 
+    applyFilters,
+    updateFilteredCities
+} from './citiesReducers';
+
+import { DEFAULT_MAX_CITIES_NUMBER, DEFAULT_FILTER_DEBOUNCE_TIME } from '../../const';
 
 export const getCitiesEpic = (action$, state$) => {
     return action$.pipe(
         ofType(getCitiesStart.type),
-        debounceTime(200),
+        debounceTime(DEFAULT_FILTER_DEBOUNCE_TIME),
         mergeMap(() => {
-            console.log("Overpass API");
-            const mapBounds = state$.value.cities.bounds; // Zakładamy, że bounds są w stanie
-            console.log(mapBounds);
+            const mapBounds = state$.value.cities.bounds;
             const [N, E, S, W] = mapBounds;
 
             const overpassQuery = `
@@ -28,8 +34,10 @@ export const getCitiesEpic = (action$, state$) => {
                 map((response) => {
                     const cities = response.elements
                         .filter((el) => el.tags && el.tags.population)
-                        .sort((a, b) => b.tags.population - a.tags.population)
-                        .slice(0, 20)
+                        .sort((a, b) => 
+                            parseInt(b.tags.population, 10) - parseInt(a.tags.population, 10)
+                        )
+                        .slice(0, DEFAULT_MAX_CITIES_NUMBER)
                         .map((city) => ({
                             name: city.tags['name:en'] ?? city.tags.name,
                             population: city.tags.population,
@@ -44,3 +52,23 @@ export const getCitiesEpic = (action$, state$) => {
     );
 };
 
+export const filterCitiesEpic = (action$, state$) => {
+    return action$.pipe(
+        ofType(applyFilters.type),
+        debounceTime(200),
+        map(() => {
+            const { cities, filter } = state$.value.cities;
+
+            const filteredCities = cities.filter(city => {
+                const cityNameMatches = city.name
+                    .toLowerCase()
+                    .includes(filter.city.toLowerCase());
+                const populationMatches = city.population >= filter.population;
+
+                return cityNameMatches && populationMatches;
+            })
+            console.log("Filtered cities: " + filteredCities);
+            return updateFilteredCities(filteredCities);
+        })
+    );
+};
