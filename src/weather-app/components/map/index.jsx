@@ -72,15 +72,14 @@ export const Map = () => {
     const moveToLocation = () => {
         dispatch(locateUserStart());
     };
-
-
+      
     return (
         <MapWrapper>
             <MapContainer 
                 center={DEFAULT_MAP_LOCATION} 
                 zoom={DEFAULT_MAP_ZOOM} 
                 scrollWheelZoom={DEFAULT_SCROLL_WHEEL_ZOOM}
-                style={{borderRadius: '10px'}}
+                style={{borderRadius: '10px', position: 'relative'}}
                 whenReady={moveToLocation}
             >
                 <TileLayer
@@ -98,9 +97,7 @@ export const Map = () => {
             }
 
             <MapMover />
-
-            
-            {citiesAreLoading && <LoadingSpinner/>}
+            <LoadingSpinner isLoading={citiesAreLoading}/>
 
             <button 
                 style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 1000 }} 
