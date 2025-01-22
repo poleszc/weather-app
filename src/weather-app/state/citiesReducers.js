@@ -8,7 +8,11 @@ const initialState = {
     cities: [],
     bounds: null,
     loading: false,
-    error: null
+    error: null,
+    filter: {
+        city: '',
+        population: 0
+    }
 }
 
 export const citiesSlice = createSlice({
@@ -33,10 +37,14 @@ export const citiesSlice = createSlice({
         updateBounds: (state, action) => {
             console.log("New bounds: " + action.payload);
             state.bounds = action.payload;
+        },
+        applyFilters: (state, action) => {
+            console.log("Update filters");
+            state.filter = action.payload;
         }
     }
 });
 
-export const { getCitiesStart, getCitiesSuccess, getCitiesFailure, updateBounds } = citiesSlice.actions;
+export const { getCitiesStart, getCitiesSuccess, getCitiesFailure, updateBounds, applyFilters } = citiesSlice.actions;
 
 export default citiesSlice.reducer;

@@ -20,3 +20,8 @@ export const citiesAreLoadingSelector = createSelector(
     citiesState,
     ({ loading }) => loading 
 );
+
+export const filterSelector = createSelector(
+    citiesState,
+    ({ filter }) => filter
+);

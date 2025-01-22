@@ -1,6 +1,6 @@
 import { Icon } from "leaflet";
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvent } from "react-leaflet";
 import customMarkerIcon from '../../../assets/pin.png';
