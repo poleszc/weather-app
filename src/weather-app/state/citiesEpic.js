@@ -22,7 +22,7 @@ import {
     OVERPASS_API_URL,
     DEFAULT_WEATHER_REFRESH_INTERVAL,
     DEFAULT_DOWNLOAD_DEBOUNCE_TIME
-} from '../../const';
+} from '../../constsAndUtils';
 
 export const getCitiesEpic = (action$, state$) => {
     return action$.pipe(

@@ -74,5 +74,14 @@ export const GlobalStyle = createGlobalStyle`
         resize: vertical;
         min-height: 100px;
     }
-    
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
 `;

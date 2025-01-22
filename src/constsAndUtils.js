@@ -20,3 +20,17 @@ export const WEATHER_ICONS = {
     'Not Nice': '🤮',
     'Loading': '💀'
 }
+
+export const assignWeatherClass = (weather) => {
+    const isNoRain = weather.precip_mm === 0;
+    const isIdealTemp = weather.temperature >= IDEAL_TEMP.min &&
+                        weather.temperature <= IDEAL_TEMP.max;
+
+    if (isIdealTemp && isNoRain) {
+        return 'Nice';
+    }
+    if (!isIdealTemp && !isNoRain) {
+        return 'Not Nice';
+    }
+    return 'Passable';
+};

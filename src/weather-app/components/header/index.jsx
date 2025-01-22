@@ -7,7 +7,6 @@ export const Header = () => {
     const isDarkMode = useSelector(themeSelector);
     const dispatch = useDispatch();
 
-
     return (
         <HeaderWrapper>
             <div>
