@@ -115,14 +115,15 @@ export const getWeatherEpic = (action$, state$) => {
             return from(citiesToFetch).pipe(
                 mergeMap((city) => {
                     const weatherUrl = `${WEATHER_API_URL}?key=${API_KEY}&q=${city.lat},${city.lng}`;
-
+                    console.log(weatherUrl);
                     return ajax.getJSON(weatherUrl).pipe(
                         map((weatherResponse) => {
                             const weatherData = {
                                 name: weatherResponse.location.name,
-                                country: weatherResponse.location.country,
                                 temperature: weatherResponse.current.temp_c,
+                                feelsLike: weatherResponse.current.feelslike_c,
                                 humidity: weatherResponse.current.humidity,
+                                pressure: weatherResponse.current.pressure_mb,
                                 precip_mm: weatherResponse.current.precip_mm,
                                 condition: weatherResponse.current.condition.text,
                                 icon: weatherResponse.current.condition.icon,

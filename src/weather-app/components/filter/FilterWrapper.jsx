@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const FilterWrapper = styled.div`
     flex-basis: 25%;
-    border-radius: 10px;
-    background-color: ${({theme}) => theme.colors.idk};
+    border-radius: ${({ theme }) => theme.dims.borderRadius};
+    background-color: ${({theme}) => theme.colors.secondary};
     padding: 1rem;
     display: flex;
     flex-direction: column;

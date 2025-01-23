@@ -7,8 +7,11 @@ export const CustomTooltip = ({ city, weather, weatherClass }) => {
             {weather ? (
                 <>
                     <p><strong>Temperature:</strong> {weather.temperature}°C</p>
-                    <p><strong>Condition:</strong> {weather.condition}</p>
+                    <p><strong>Feels like:</strong> {weather.feelsLike}°C</p>
                     <p><strong>Humidity:</strong> {weather.humidity}%</p>
+                    <p><strong>Pressure:</strong> {weather.pressure}hPa</p>
+                    {weather.precip_mm !== 0 && <p><strong>Rain:</strong> {weather.precip_mm}mm</p>}
+                    <p><strong>Condition:</strong> {weather.condition}</p>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'center',

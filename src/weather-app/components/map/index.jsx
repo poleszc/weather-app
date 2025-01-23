@@ -1,9 +1,9 @@
 import 'leaflet/dist/leaflet.css';
 import React from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
+import { TileLayer } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
 
-import { LoadingSpinner, MapMover, CustomMarker, MapWrapper, CenterButton } from "./components";
+import { LoadingSpinner, MapMover, CustomMarker, MapWrapper, CenterButton, StyledMapContainer } from "./components";
 import { locateUserStart } from "../../state/locationReducers";
 import { citiesAreLoadingSelector, filteredCitiesSelector, weatherByCitySelector } from "../../state/selectors";
 import { DEFAULT_MAP_ZOOM, DEFAULT_MAP_LOCATION, DEFAULT_SCROLL_WHEEL_ZOOM } from "../../../constsAndUtils";
@@ -16,11 +16,10 @@ export const Map = () => {
 
     return (
         <MapWrapper>
-            <MapContainer 
+            <StyledMapContainer 
                 center={DEFAULT_MAP_LOCATION} 
                 zoom={DEFAULT_MAP_ZOOM} 
                 scrollWheelZoom={DEFAULT_SCROLL_WHEEL_ZOOM}
-                style={{borderRadius: '10px', position: 'relative'}}
                 whenReady={() => {dispatch(locateUserStart());}}
             >
                 <TileLayer
@@ -36,7 +35,7 @@ export const Map = () => {
                 <MapMover />
                 <LoadingSpinner isLoading={citiesAreLoading}/>
                 <CenterButton />
-            </MapContainer>
+            </StyledMapContainer>
         </MapWrapper>
     )
 }

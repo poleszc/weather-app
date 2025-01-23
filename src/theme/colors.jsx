@@ -1,21 +1,25 @@
 export const lightColorPalette = {
-    header: "#2EBFF9",
-    footer: "#69BEE0",
-    idk: "#B2C8D0",
     background: "#DAE4DB",
+    primary: "#69BEE0",
+    secondary: "#B2C8D0",
     button: "#F8FBF1",
-    text: "#000000",
-    inputText:"#000000"
+    buttonText: "#000000",
+    buttonHover: "#666666",
+    inputBorder: "#CCCCCC",
+    text: "#FFFFFF",
+    secondaryText:"#000000"
 }   
 
 export const darkColorPalette = {
-    header: "#034762",
-    footer: "#13485E",
-    idk: "#324952",
     background: "#3F5742",
+    primary: "#13485E",
+    secondary: "#324952",
     button: "#668225",
+    buttonText: "#FFFFFF",
+    buttonHover: "#666666",
+    inputBorder: "#668225",
     text: "#FFFFFF",
-    inputText:"#000000"
+    secondaryText:"#000000"
 }
 
 export const colors = {

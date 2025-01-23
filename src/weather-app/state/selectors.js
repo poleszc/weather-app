@@ -55,3 +55,16 @@ export const maxPopulationInVisibleCitiesSelector = createSelector(
         return cityWithMaxPopulation.population;
     }
 );
+
+export const minPopulationInVisibleCitiesSelector = createSelector(
+    cityDataState,
+    ( {cities} ) => {
+        if (!cities || cities.length === 0) {
+            return null;
+        }
+        const cityWithMaxPopulation = cities.reduce((maxCity, currentCity) => {
+            return parseInt(currentCity.population, 10) < parseInt(maxCity.population, 10) ? currentCity : maxCity;
+        });
+        return cityWithMaxPopulation.population;
+    }
+);
