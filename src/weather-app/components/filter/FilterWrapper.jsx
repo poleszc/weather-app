@@ -9,6 +9,5 @@ export const FilterWrapper = styled.div`
     flex-direction: column;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    // margin: 8px;
     gap: 1.5rem;
 `;

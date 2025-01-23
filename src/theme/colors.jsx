@@ -6,8 +6,11 @@ export const lightColorPalette = {
     buttonText: "#000000",
     buttonHover: "#666666",
     inputBorder: "#CCCCCC",
+    inputBackground: "#FFFFFF",
     text: "#FFFFFF",
-    secondaryText:"#000000"
+    secondaryText: "#000000",
+    sliderThumb: "#69BEE0",
+    sliderThumbBorder: "#FFFFFF"
 }   
 
 export const darkColorPalette = {
@@ -18,8 +21,11 @@ export const darkColorPalette = {
     buttonText: "#FFFFFF",
     buttonHover: "#666666",
     inputBorder: "#668225",
+    inputBackground: "#FFFFFF",
     text: "#FFFFFF",
-    secondaryText:"#000000"
+    secondaryText:"#000000",
+    sliderThumb: "#668225",
+    sliderThumbBorder: "#DEDEDE"
 }
 
 export const colors = {

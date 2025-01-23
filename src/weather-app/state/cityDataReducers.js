@@ -27,31 +27,28 @@ export const citiesSlice = createSlice({
             state.loading = false;
             state.cities = action.payload;
             state.filteredCities = action.payload;
-            // TODO: Clear filters on map move?
         },
         getCitiesFailure: (state, action) => {
             state.loading = false;
             state.error = action.payload;
         },
-        getWeatherStart: (state) => {},
         getWeatherSuccess: (state, action) => {
             const {cityName, weatherData} = action.payload;
             state.weatherByCity[cityName] = weatherData;
         },
-        getWeatherFailure: (state, action) => {},
+        getWeatherFailure: (state, action) => {
+            state.error = action.payload;
+        },
         clearWeatherData: (state) => {
             state.weatherByCity = {};
         },
         updateBounds: (state, action) => {
-            console.log("New bounds: " + action.payload);
             state.bounds = action.payload;
         },
         applyFilters: (state, action) => {
-            console.log("Update filters");
             state.filter = action.payload;
         },
         updateFilteredCities: (state, action) => {
-            console.log("Update filtered cities");
             state.filteredCities = action.payload;
         }
     }
@@ -61,7 +58,6 @@ export const {
     getCitiesStart,
     getCitiesSuccess, 
     getCitiesFailure, 
-    getWeatherStart,
     getWeatherSuccess,
     getWeatherFailure,
     updateBounds, 

@@ -6,7 +6,6 @@ import {
     getCitiesStart, 
     getCitiesSuccess, 
     getCitiesFailure, 
-    getWeatherStart,
     getWeatherSuccess,
     getWeatherFailure,
     applyFilters,
@@ -29,9 +28,6 @@ export const getCitiesEpic = (action$, state$) => {
         ofType(getCitiesStart.type),
         debounceTime(DEFAULT_DOWNLOAD_DEBOUNCE_TIME),
         mergeMap(() => {
-            
-            console.log("getCitiesEpic");
-
             const mapBounds = state$.value.cities.bounds;
             const [N, E, S, W] = mapBounds;
 
@@ -72,9 +68,6 @@ export const filterCitiesEpic = (action$, state$) => {
         ofType(applyFilters.type),
         debounceTime(DEFAULT_FILTER_DEBOUNCE_TIME),
         map(() => {
-
-            console.log("filterCitiesEpic");
-
             const { cities, filter } = state$.value.cities;
 
             const filteredCities = cities.filter(city => {
@@ -85,7 +78,6 @@ export const filterCitiesEpic = (action$, state$) => {
 
                 return cityNameMatches && populationMatches;
             })
-            console.log("Filtered cities: " + filteredCities);
             return updateFilteredCities(filteredCities);
         })
     );
@@ -94,28 +86,19 @@ export const filterCitiesEpic = (action$, state$) => {
 export const getWeatherEpic = (action$, state$) => {
     return action$.pipe(
         ofType(getCitiesSuccess.type),
-        debounceTime(DEFAULT_DOWNLOAD_DEBOUNCE_TIME), // TODO: Is that needed?
+        debounceTime(DEFAULT_DOWNLOAD_DEBOUNCE_TIME),
         mergeMap((action) => {
-
-            console.log("getWeather");
-
             const cities = action.payload;
             const weatherByCity = state$.value.cities.weatherByCity;
-
             const citiesToFetch = cities.filter(city => !weatherByCity[city.name])
 
-            console.log(`All cities ${cities.length}, fetching: ${citiesToFetch.length}`);
-            console.log(`Dict size: ${Object.keys(weatherByCity).length}`);
-
             if (citiesToFetch.length === 0) {
-                console.log("No reload");
                 return of();
             }
             
             return from(citiesToFetch).pipe(
                 mergeMap((city) => {
                     const weatherUrl = `${WEATHER_API_URL}?key=${API_KEY}&q=${city.lat},${city.lng}`;
-                    console.log(weatherUrl);
                     return ajax.getJSON(weatherUrl).pipe(
                         map((weatherResponse) => {
                             const weatherData = {
@@ -146,9 +129,6 @@ export const getWeatherEpic = (action$, state$) => {
 export const refreshWeatherEpic = (action$, state$) => {
     return interval(DEFAULT_WEATHER_REFRESH_INTERVAL).pipe(
         map(() => {
-
-            console.log("Refresh data");
-
             const { cities } = state$.value.cities;
 
             if (cities.length === 0) {

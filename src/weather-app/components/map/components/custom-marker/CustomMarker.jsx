@@ -1,7 +1,6 @@
 import React from 'react';
-import L from 'leaflet';
 import { Marker, Tooltip } from 'react-leaflet';
-import { WEATHER_ICONS, assignWeatherClass } from '../../../../../constsAndUtils';
+import { assignWeatherClass } from '../../../../../constsAndUtils';
 import { CustomTooltip } from './CustomTooltip';
 import { createCustomIcon } from './CustomIcon';
 

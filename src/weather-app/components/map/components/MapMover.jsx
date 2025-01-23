@@ -17,7 +17,6 @@ export const MapMover = () => {
     }, [userLocation, map]);
 
     useMapEvent('moveend', () => {
-        console.log("Map was moved");
         const bounds = map.getBounds();
         const mapBounds = [
             bounds.getNorthEast().lat,
@@ -28,7 +27,6 @@ export const MapMover = () => {
 
         dispatch(updateBounds(mapBounds));
         dispatch(getCitiesStart());
-        // dispatch(applyFilters()); // TODO: Apply filters afret map move?
     })
 
     return null;
