@@ -4,7 +4,6 @@ export const FilterWrapper = styled.div`
     flex-basis: 25%;
     border-radius: 10px;
     background-color: ${({theme}) => theme.colors.idk};
-    color: ${({theme}) => theme.colors.text};
     padding: 1rem;
     display: flex;
     flex-direction: column;

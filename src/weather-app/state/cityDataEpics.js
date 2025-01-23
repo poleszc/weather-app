@@ -29,6 +29,9 @@ export const getCitiesEpic = (action$, state$) => {
         ofType(getCitiesStart.type),
         debounceTime(DEFAULT_DOWNLOAD_DEBOUNCE_TIME),
         mergeMap(() => {
+            
+            console.log("getCitiesEpic");
+
             const mapBounds = state$.value.cities.bounds;
             const [N, E, S, W] = mapBounds;
 
@@ -69,6 +72,9 @@ export const filterCitiesEpic = (action$, state$) => {
         ofType(applyFilters.type),
         debounceTime(DEFAULT_FILTER_DEBOUNCE_TIME),
         map(() => {
+
+            console.log("filterCitiesEpic");
+
             const { cities, filter } = state$.value.cities;
 
             const filteredCities = cities.filter(city => {
@@ -90,6 +96,8 @@ export const getWeatherEpic = (action$, state$) => {
         ofType(getCitiesSuccess.type),
         debounceTime(DEFAULT_DOWNLOAD_DEBOUNCE_TIME), // TODO: Is that needed?
         mergeMap((action) => {
+
+            console.log("getWeather");
 
             const cities = action.payload;
             const weatherByCity = state$.value.cities.weatherByCity;
@@ -137,7 +145,9 @@ export const getWeatherEpic = (action$, state$) => {
 export const refreshWeatherEpic = (action$, state$) => {
     return interval(DEFAULT_WEATHER_REFRESH_INTERVAL).pipe(
         map(() => {
-            console.log("Refresh data")
+
+            console.log("Refresh data");
+
             const { cities } = state$.value.cities;
 
             if (cities.length === 0) {

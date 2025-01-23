@@ -20,33 +20,25 @@ export const citiesSlice = createSlice({
     initialState,
     reducers: {
         getCitiesStart: (state) => {
-            console.log("getCitiesStart");
             state.loading = true;
             state.error = null;
         },
         getCitiesSuccess: (state, action) => {
-            console.log("getCitiesSuccess");
             state.loading = false;
             state.cities = action.payload;
             state.filteredCities = action.payload;
             // TODO: Clear filters on map move?
         },
         getCitiesFailure: (state, action) => {
-            console.log("getCitiesFail");
             state.loading = false;
             state.error = action.payload;
         },
-        getWeatherStart: (state) => {
-            console.log("Get weather start");
-        },
+        getWeatherStart: (state) => {},
         getWeatherSuccess: (state, action) => {
-            console.log("Get weather success");
             const {cityName, weatherData} = action.payload;
             state.weatherByCity[cityName] = weatherData;
         },
-        getWeatherFailure: (state, action) => {
-            console.log("Get weather failure");
-        },
+        getWeatherFailure: (state, action) => {},
         clearWeatherData: (state) => {
             state.weatherByCity = {};
         },

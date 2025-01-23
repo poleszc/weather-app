@@ -60,7 +60,7 @@ export const GlobalStyle = createGlobalStyle`
         border-radius: 4px;
         font-size: 1rem;
         font-family: ${({ theme }) => theme.fonts.basic.fontFamily};
-        color: ${({ theme }) => theme.colors.text};
+        color: ${({ theme }) => theme.colors.inputText};
         background-color: ${({ theme }) => theme.colors.inputBackground || '#fff'};
 
         &:focus {

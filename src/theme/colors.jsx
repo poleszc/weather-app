@@ -4,7 +4,8 @@ export const lightColorPalette = {
     idk: "#B2C8D0",
     background: "#DAE4DB",
     button: "#F8FBF1",
-    text: "#000000"
+    text: "#000000",
+    inputText:"#000000"
 }   
 
 export const darkColorPalette = {
@@ -13,7 +14,8 @@ export const darkColorPalette = {
     idk: "#324952",
     background: "#3F5742",
     button: "#668225",
-    text: "#FFFFFF"
+    text: "#FFFFFF",
+    inputText:"#000000"
 }
 
 export const colors = {
