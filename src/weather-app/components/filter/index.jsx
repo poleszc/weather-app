@@ -40,7 +40,7 @@ export const Filter = () => {
                         type="range" 
                         min={minPopulation} 
                         max={maxPopulation} 
-                        value={filterData.population || minPopulation}
+                        value={filterData.population ?? minPopulation}
                         step={1000}
                         onChange={(e) => 
                             dispatch(applyFilters(
