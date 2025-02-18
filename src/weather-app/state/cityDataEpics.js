@@ -9,7 +9,6 @@ import {
     getWeatherSuccess,
     getWeatherFailure,
     applyFilters,
-    updateFilteredCities,
     clearWeatherData
 } from './cityDataReducers';
 
@@ -68,17 +67,8 @@ export const filterCitiesEpic = (action$, state$) => {
         ofType(applyFilters.type),
         debounceTime(DEFAULT_FILTER_DEBOUNCE_TIME),
         map(() => {
-            const { cities, filter } = state$.value.cities;
-
-            const filteredCities = cities.filter(city => {
-                const cityNameMatches = city.name
-                    .toLowerCase()
-                    .includes(filter.city.toLowerCase());
-                const populationMatches = city.population >= filter.population;
-
-                return cityNameMatches && populationMatches;
-            })
-            return updateFilteredCities(filteredCities);
+            const filter = state$.value.cities.filter;
+            return applyFilters(filter);
         })
     );
 };

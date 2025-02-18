@@ -4,7 +4,6 @@ export const CITIES_REDUCER_NAME = 'cities'
 
 const initialState = {
     cities: [],
-    filteredCities: [],
     weatherByCity: {},
     bounds: null,
     loading: false,
@@ -26,7 +25,6 @@ export const citiesSlice = createSlice({
         getCitiesSuccess: (state, action) => {
             state.loading = false;
             state.cities = action.payload;
-            state.filteredCities = action.payload;
         },
         getCitiesFailure: (state, action) => {
             state.loading = false;
@@ -47,9 +45,6 @@ export const citiesSlice = createSlice({
         },
         applyFilters: (state, action) => {
             state.filter = action.payload;
-        },
-        updateFilteredCities: (state, action) => {
-            state.filteredCities = action.payload;
         }
     }
 });
@@ -62,7 +57,6 @@ export const {
     getWeatherFailure,
     updateBounds, 
     applyFilters,
-    updateFilteredCities,
     clearWeatherData
 } = citiesSlice.actions;
 

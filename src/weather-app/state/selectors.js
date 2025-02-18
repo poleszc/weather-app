@@ -2,6 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { LOCATION_REDUCER_NAME } from "./locationReducers";
 import { CITIES_REDUCER_NAME } from "./cityDataReducers";
 import { THEME_REDUCER_NAME } from "./themeReducers";
+import { assignWeatherClass } from "../../constsAndUtils";
 
 export const selectLocationState = (state) => state[LOCATION_REDUCER_NAME];
 export const cityDataState = (state) => state[CITIES_REDUCER_NAME];
@@ -18,14 +19,22 @@ export const themeSelector = createSelector(
     ({ isDarkMode }) => isDarkMode
 );
 
-export const citiesSelector = createSelector(
-    cityDataState,
-    ({ cities }) => cities
-);
-
 export const filteredCitiesSelector = createSelector(
     cityDataState,
-    ({ filteredCities }) => filteredCities  
+    ({ cities, filter, weatherByCity }) => {
+        return cities.filter((city) => {
+            const isCityNameMatch = city.name.toLowerCase().includes(filter.city.toLowerCase());
+            const isPopulationMatch = parseInt(city.population, 10) >= filter.population;
+            return isCityNameMatch && isPopulationMatch;
+        }).map((city) => {
+            const weather = weatherByCity[city.name];
+            const weatherClass = weather ? assignWeatherClass(weather) : 'Loading';
+            return {
+                ...city,
+                weatherClass
+            };
+        });
+    }
 );
 
 export const citiesAreLoadingSelector = createSelector(
